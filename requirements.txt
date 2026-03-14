@@ -1,15 +1,7 @@
-# Smart Campus Navigation System — Python Dependencies
-
-# Web Framework
 fastapi==0.111.0
 uvicorn[standard]==0.29.0
-
-# ML & NLP
+python-multipart==0.0.9
 scikit-learn==1.4.2
-nltk==3.8.1
 pandas==2.2.2
 numpy==1.26.4
-
-# Utilities
 pydantic==2.7.1
-python-multipart==0.0.9
