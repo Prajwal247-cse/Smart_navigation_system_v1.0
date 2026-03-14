@@ -1,0 +1,181 @@
+query,intent
+quiet place to study,STUDY
+library study room,STUDY
+where can I study,STUDY
+I need a place to read,STUDY
+silent study area,STUDY
+I want to focus on my assignment,STUDY
+where is the reading room,STUDY
+I need a desk to work,STUDY
+peaceful place to study,STUDY
+I need Wi-Fi to study,STUDY
+where can I do my homework,STUDY
+I need to prepare for exams,STUDY
+study lounge near me,STUDY
+I want a quiet corner,STUDY
+where to revise for tests,STUDY
+I need a table and chair to work,STUDY
+library near my hostel,STUDY
+24 hour study room,STUDY
+group study space,STUDY
+I want to do research,STUDY
+where can I access academic journals,STUDY
+I need to concentrate on my project,STUDY
+where is the computer lab for studying,STUDY
+I need a productive environment,STUDY
+open library right now,STUDY
+where can I borrow textbooks,STUDY
+I need reference books,STUDY
+where to sit and study outdoors,STUDY
+seminar room to study,STUDY
+I want a collaborative study space,STUDY
+where can I get breakfast,FOOD
+I am hungry,FOOD
+where is the cafeteria,FOOD
+find me a canteen,FOOD
+where to eat near here,FOOD
+food stalls on campus,FOOD
+I need lunch right now,FOOD
+where can I get a meal,FOOD
+find me a restaurant,FOOD
+I need coffee and snacks,FOOD
+where is the dining hall,FOOD
+I want pizza near campus,FOOD
+late night food options,FOOD
+where can I eat cheaply,FOOD
+campus food court,FOOD
+I want to grab a bite,FOOD
+where is the nearest eating place,FOOD
+I need a quick snack,FOOD
+vegetarian food on campus,FOOD
+where to get drinks and food,FOOD
+I want to buy lunch,FOOD
+food near the engineering block,FOOD
+where is the mess hall,FOOD
+best place to eat on campus,FOOD
+I want hot food,FOOD
+I skipped breakfast where can I eat,FOOD
+I need dinner options,FOOD
+fast food on campus,FOOD
+where can I get tea or coffee,FOOD
+tuck shop near library,FOOD
+I need a doctor,MEDICAL
+I am feeling sick,MEDICAL
+where is the health center,MEDICAL
+medical emergency on campus,MEDICAL
+I need first aid,MEDICAL
+where is the clinic,MEDICAL
+I have a headache and need medicine,MEDICAL
+pharmacy on campus,MEDICAL
+I need to see a nurse,MEDICAL
+where is the nearest hospital,MEDICAL
+I feel unwell,MEDICAL
+I need urgent medical attention,MEDICAL
+where can I get medication,MEDICAL
+campus dispensary location,MEDICAL
+I need an ambulance,MEDICAL
+I have an injury,MEDICAL
+where is the medical room,MEDICAL
+mental health support on campus,MEDICAL
+I need counseling services,MEDICAL
+I feel dizzy and need help,MEDICAL
+health services location,MEDICAL
+where is the student clinic,MEDICAL
+I need a medical certificate,MEDICAL
+I need to see a specialist,MEDICAL
+I have a fever,MEDICAL
+where can I get vaccinated,MEDICAL
+I cut myself and need bandages,MEDICAL
+I need eye care services,MEDICAL
+emergency medical help,MEDICAL
+I need dental care,MEDICAL
+where is the admission office,ADMIN
+I need to register for a course,ADMIN
+where can I pay fees,ADMIN
+I need my transcript,ADMIN
+student affairs office location,ADMIN
+I need to update my personal details,ADMIN
+where is the registrar,ADMIN
+I need an official letter,ADMIN
+how to apply for graduation,ADMIN
+finance office location,ADMIN
+where to get my student ID,ADMIN
+I need to file a complaint,ADMIN
+where is the dean office,ADMIN
+I need a scholarship form,ADMIN
+where to appeal my grade,ADMIN
+I need to defer my semester,ADMIN
+where is the examination office,ADMIN
+academic calendar enquiry,ADMIN
+where to get a bonafide certificate,ADMIN
+I need to change my course,ADMIN
+where is the international students office,ADMIN
+I need to renew my library card,ADMIN
+where is the HR department,ADMIN
+faculty administrative office,ADMIN
+I need to collect my certificate,ADMIN
+where to submit my assignment officially,ADMIN
+where is the results office,ADMIN
+I need to sign documents,ADMIN
+where is the vice chancellor office,ADMIN
+where to report an academic issue,ADMIN
+where is the computer lab,LAB
+I need to print something,LAB
+access science laboratory,LAB
+where is the physics lab,LAB
+I need to use lab equipment,LAB
+where is the chemistry lab,LAB
+I need to run an experiment,LAB
+where is the biology lab,LAB
+I need a workstation for coding,LAB
+programming lab location,LAB
+where is the electronics lab,LAB
+I need to use the 3D printer,LAB
+where is the robotics lab,LAB
+I need to use lab instruments,LAB
+where is the engineering lab,LAB
+software lab on campus,LAB
+I need to use MATLAB,LAB
+where is the networking lab,LAB
+machine learning computing lab,LAB
+I need to use the microscope,LAB
+where is the AI lab,LAB
+I need to print my assignment,LAB
+where can I scan documents,LAB
+I need to use Linux machines,LAB
+where is the research lab,LAB
+I need to use specialized software,LAB
+where is the hardware lab,LAB
+I need to calibrate instruments,LAB
+where is the photonics lab,LAB
+I need a GPU workstation,LAB
+where is my hostel,HOSTEL
+I need to go back to my room,HOSTEL
+where is block A hostel,HOSTEL
+I need directions to my dormitory,HOSTEL
+where is the boys hostel,HOSTEL
+where is the girls hostel,HOSTEL
+I want to go to my accommodation,HOSTEL
+where is the warden office,HOSTEL
+I have a room maintenance issue,HOSTEL
+where is the hostel office,HOSTEL
+I need to check my room allocation,HOSTEL
+where is the laundry room,HOSTEL
+I need to pay my hostel fees,HOSTEL
+where is the common room,HOSTEL
+hostel visiting hours,HOSTEL
+where is the nearest hostel,HOSTEL
+I need to speak to the hostel warden,HOSTEL
+where is the student residence,HOSTEL
+I need to apply for hostel,HOSTEL
+where is the hostel canteen,HOSTEL
+I need to find my block,HOSTEL
+where is the hostel gym,HOSTEL
+hostel internet issues,HOSTEL
+where is the hostel prayer room,HOSTEL
+I locked myself out of my room,HOSTEL
+where is the hostel recreation room,HOSTEL
+I need to report a hostel problem,HOSTEL
+where is the nearest ATM in hostel,HOSTEL
+where is block C hostel,HOSTEL
+hostel check-in procedure,HOSTEL

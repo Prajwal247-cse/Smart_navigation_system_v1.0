@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smart Campus Navigator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#080d18;--surface:#0f1624;--card:#141c2e;--border:#1c2b42;
+      --accent:#4f8ef7;--accent2:#06d6c7;--green:#10c97a;--red:#f05050;
+      --amber:#f5a623;--text:#dde6f5;--muted:#5a7090;--heading:#f0f6ff;
+      --r:14px;
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+    body::before{content:'';position:fixed;inset:0;z-index:0;
+      background:radial-gradient(ellipse 70% 45% at 15% 8%,rgba(79,142,247,.08) 0%,transparent 60%),
+                 radial-gradient(ellipse 55% 35% at 85% 92%,rgba(6,214,199,.06) 0%,transparent 60%);
+      pointer-events:none}
+    .wrap{max-width:860px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+    header{padding:52px 0 28px;text-align:center}
+    .badge{display:inline-flex;align-items:center;gap:7px;background:rgba(79,142,247,.1);
+      border:1px solid rgba(79,142,247,.22);border-radius:999px;padding:5px 16px;
+      font-size:11px;font-weight:500;color:var(--accent2);letter-spacing:.08em;
+      text-transform:uppercase;margin-bottom:18px}
+    .badge::before{content:'◉';font-size:8px}
+    h1{font-family:'Syne',sans-serif;font-size:clamp(26px,5vw,46px);font-weight:800;
+      color:var(--heading);line-height:1.15;letter-spacing:-.02em}
+    h1 span{background:linear-gradient(135deg,var(--accent),var(--accent2));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .subtitle{margin-top:10px;font-size:15px;color:var(--muted);font-weight:300}
+    .mode-tabs{display:flex;gap:0;margin:32px 0 0;background:var(--surface);
+      border:1.5px solid var(--border);border-radius:var(--r);padding:5px;width:fit-content;margin-inline:auto}
+    .tab{padding:9px 22px;border-radius:10px;font-family:'Syne',sans-serif;font-size:13px;
+      font-weight:600;cursor:pointer;border:none;background:transparent;
+      color:var(--muted);transition:all .2s;display:flex;align-items:center;gap:7px}
+    .tab.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}
+    .tab:not(.active):hover{color:var(--text);background:rgba(255,255,255,.04)}
+    .input-panel{display:none;margin-top:18px}
+    .input-panel.active{display:block}
+    .search-box{position:relative;background:var(--card);border:1.5px solid var(--border);
+      border-radius:var(--r);transition:border-color .2s,box-shadow .2s;overflow:hidden}
+    .search-box:focus-within{border-color:var(--accent);box-shadow:0 0 38px rgba(79,142,247,.13)}
+    .si{position:absolute;left:18px;top:50%;transform:translateY(-50%);color:var(--muted);
+      font-size:18px;pointer-events:none}
+    #textInput{width:100%;background:transparent;border:none;outline:none;
+      padding:20px 160px 20px 52px;font-size:16px;color:var(--text);font-family:'DM Sans',sans-serif}
+    #textInput::placeholder{color:var(--muted)}
+    .send-btn{position:absolute;right:8px;top:50%;transform:translateY(-50%);
+      background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;
+      border-radius:10px;padding:10px 22px;color:#fff;font-family:'Syne',sans-serif;
+      font-weight:600;font-size:14px;cursor:pointer;transition:opacity .2s,transform .1s;white-space:nowrap}
+    .send-btn:hover{opacity:.88}
+    .send-btn:active{transform:translateY(-50%) scale(.97)}
+    .send-btn:disabled{opacity:.45;cursor:not-allowed}
+    .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .chip{background:rgba(255,255,255,.04);border:1px solid var(--border);
+      border-radius:999px;padding:5px 14px;font-size:12px;color:var(--muted);
+      cursor:pointer;transition:all .18s}
+    .chip:hover{background:rgba(79,142,247,.1);border-color:var(--accent);color:var(--accent2)}
+    .audio-panel-inner{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    @media(max-width:600px){.audio-panel-inner{grid-template-columns:1fr}}
+    .audio-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);
+      padding:28px 24px;display:flex;flex-direction:column;align-items:center;gap:14px;
+      text-align:center;transition:border-color .2s}
+    .audio-card:hover{border-color:rgba(79,142,247,.35)}
+    .audio-card h3{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--heading)}
+    .audio-card p{font-size:13px;color:var(--muted);line-height:1.55}
+    #micBtn{width:72px;height:72px;border-radius:50%;border:none;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;font-size:28px;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      transition:transform .2s,box-shadow .2s;box-shadow:0 4px 20px rgba(79,142,247,.35)}
+    #micBtn:hover{transform:scale(1.07)}
+    #micBtn.recording{background:linear-gradient(135deg,#f05050,#f5834a);
+      animation:pulse 1s ease-in-out infinite;box-shadow:0 4px 24px rgba(240,80,80,.45)}
+    @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+    #micStatus{font-size:13px;color:var(--muted);min-height:20px;font-style:italic}
+    .mic-transcript{width:100%;background:rgba(79,142,247,.06);border:1px solid rgba(79,142,247,.2);
+      border-radius:8px;padding:10px 14px;font-size:13px;color:var(--accent2);
+      min-height:42px;display:none;text-align:left;line-height:1.5}
+    .loc-row{display:flex;align-items:center;gap:12px;margin-top:12px;flex-wrap:wrap}
+    .loc-label{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);cursor:pointer}
+    .loc-label input{accent-color:var(--accent);cursor:pointer}
+    #locStatus{font-size:12px;color:var(--muted);font-style:italic}
+    .legend{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:26px}
+    .ic{padding:4px 12px;border-radius:999px;font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase}
+    .STUDY  {background:rgba(99,102,241,.14);color:#818cf8;border:1px solid rgba(99,102,241,.28)}
+    .FOOD   {background:rgba(245,158,11,.14);color:#fbbf24;border:1px solid rgba(245,158,11,.28)}
+    .MEDICAL{background:rgba(239,68,68,.14); color:#f87171;border:1px solid rgba(239,68,68,.28)}
+    .ADMIN  {background:rgba(16,185,129,.14);color:#34d399;border:1px solid rgba(16,185,129,.28)}
+    .LAB    {background:rgba(6,182,212,.14); color:#22d3ee;border:1px solid rgba(6,182,212,.28)}
+    .HOSTEL {background:rgba(251,146,60,.14);color:#fb923c;border:1px solid rgba(251,146,60,.28)}
+    #loader{display:none;text-align:center;padding:44px 0}
+    .spinner{width:38px;height:38px;border:3px solid var(--border);border-top-color:var(--accent);
+      border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 12px}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    #results{margin-top:30px}
+    .res-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+    .res-header h2{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;color:var(--heading)}
+    .conf-badge{margin-left:auto;background:rgba(16,201,122,.1);color:var(--green);
+      border:1px solid rgba(16,201,122,.22);border-radius:999px;padding:3px 12px;
+      font-size:12px;font-weight:600}
+    .transcript-banner{background:rgba(79,142,247,.07);border:1px solid rgba(79,142,247,.22);
+      border-radius:10px;padding:12px 16px;margin-bottom:14px;font-size:13px;color:var(--accent2)}
+    .transcript-banner strong{color:var(--text)}
+    .fcard{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);
+      padding:22px;margin-bottom:12px;position:relative;overflow:hidden}
+    .fcard.primary{border-color:rgba(79,142,247,.38);
+      background:linear-gradient(135deg,rgba(79,142,247,.05),var(--card))}
+    .fcard.primary::before{content:'BEST MATCH';position:absolute;top:0;right:0;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;
+      font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.08em;
+      padding:4px 12px;border-radius:0 14px 0 10px}
+    .fname{font-family:'Syne',sans-serif;font-size:21px;font-weight:700;color:var(--heading);margin-bottom:5px}
+    .fdesc{font-size:14px;color:var(--muted);margin-bottom:14px;line-height:1.6}
+    .fmeta{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:16px}
+    .mi{display:flex;align-items:center;gap:6px;font-size:13px;
+      background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:5px 10px}
+    .ob{font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px}
+    .op{background:rgba(16,201,122,.1);color:var(--green);border:1px solid rgba(16,201,122,.25)}
+    .cl{background:rgba(240,80,80,.1);color:var(--red);border:1px solid rgba(240,80,80,.25)}
+    .maps-btn{display:inline-flex;align-items:center;gap:8px;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      color:#fff;text-decoration:none;padding:10px 20px;border-radius:10px;
+      font-family:'Syne',sans-serif;font-weight:600;font-size:14px;transition:opacity .2s,transform .15s}
+    .maps-btn:hover{opacity:.87;transform:translateY(-1px)}
+    .alt-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;
+      color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin:22px 0 10px}
+    .acard{background:var(--surface);border:1px solid var(--border);border-radius:10px;
+      padding:13px 16px;margin-bottom:8px;display:flex;align-items:center;gap:14px;
+      cursor:pointer;transition:border-color .18s,background .18s;text-decoration:none}
+    .acard:hover{border-color:var(--accent);background:rgba(79,142,247,.05)}
+    .an{font-family:'Syne',sans-serif;font-weight:600;font-size:13px;color:var(--heading)}
+    .am{font-size:12px;color:var(--muted);margin-top:2px}
+    .errbox{background:rgba(240,80,80,.08);border:1px solid rgba(240,80,80,.28);
+      border-radius:var(--r);padding:16px 20px;color:#fca5a5;font-size:14px}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+    .fu{animation:fadeUp .35s ease forwards}
+    footer{text-align:center;padding:44px 0 28px;color:var(--muted);font-size:13px}
+    footer a{color:var(--accent);text-decoration:none}
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="badge">Smart Campus Navigation — Multimodal</div>
+    <h1>Find Any Place<br/><span>By Voice or Text</span></h1>
+    <p class="subtitle">Type your query or speak — our AI understands what you need</p>
+    <div class="legend">
+      <span class="ic STUDY">📚 Study</span>
+      <span class="ic FOOD">🍽 Food</span>
+      <span class="ic MEDICAL">🏥 Medical</span>
+      <span class="ic ADMIN">🏛 Admin</span>
+      <span class="ic LAB">🔬 Lab</span>
+      <span class="ic HOSTEL">🏠 Hostel</span>
+    </div>
+  </header>
+
+  <!-- Mode tabs — Upload tab removed -->
+  <div class="mode-tabs">
+    <button class="tab active" id="tabText" onclick="setMode('text')">⌨️ Type Query</button>
+    <button class="tab"        id="tabMic"  onclick="setMode('mic')"> 🎙 Microphone</button>
+  </div>
+
+  <!-- TEXT panel -->
+  <div class="input-panel active" id="panelText">
+    <div class="search-box">
+      <span class="si">🔍</span>
+      <input id="textInput" type="text" autocomplete="off"
+        placeholder='e.g. "I need a quiet place to study" or "where can I eat?"'/>
+      <button class="send-btn" id="textBtn" onclick="goText()">Navigate →</button>
+    </div>
+    <div class="chips">
+      <span class="chip" onclick="chip(this)">🔕 Quiet place to study</span>
+      <span class="chip" onclick="chip(this)">🍜 Where can I get food?</span>
+      <span class="chip" onclick="chip(this)">🏥 I need medical help</span>
+      <span class="chip" onclick="chip(this)">🖥 Computer lab location</span>
+      <span class="chip" onclick="chip(this)">📋 Where is the admin office?</span>
+      <span class="chip" onclick="chip(this)">🏠 Where is my hostel?</span>
+    </div>
+  </div>
+
+  <!-- MIC panel -->
+  <div class="input-panel" id="panelMic">
+    <div class="audio-panel-inner">
+      <div class="audio-card">
+        <h3>🎙 Microphone</h3>
+        <p>Press the button, speak your query, then press again to stop.</p>
+        <button id="micBtn" onclick="toggleMic()">🎙</button>
+        <div id="micStatus">Click to start recording</div>
+        <div class="mic-transcript" id="micTranscript"></div>
+        <button class="send-btn" id="micSendBtn"
+          style="position:static;transform:none;width:100%;margin-top:4px;display:none"
+          onclick="sendMicResult()">Navigate with this query →</button>
+      </div>
+      <div class="audio-card" style="justify-content:center">
+        <h3>💡 How it works</h3>
+        <p>Your browser's built-in speech recognition converts your voice to text instantly — no upload needed.</p>
+        <p style="margin-top:8px">Supported: Chrome, Edge, Safari.<br/>Say something like:<br/>
+          <em style="color:var(--accent2)">"I need a doctor"</em><br/>
+          <em style="color:var(--accent2)">"Where can I eat lunch?"</em>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Location row -->
+  <div class="loc-row">
+    <label class="loc-label">
+      <input type="checkbox" id="useLocation" onchange="toggleLocation()"/>
+      Use my location for distance
+    </label>
+    <span id="locStatus"></span>
+  </div>
+
+  <!-- Loader -->
+  <div id="loader">
+    <div class="spinner"></div>
+    <p style="color:var(--muted);font-size:14px" id="loaderMsg">Processing your query…</p>
+  </div>
+
+  <!-- Results -->
+  <div id="results"></div>
+
+  <footer>
+    Smart Campus Navigation &mdash; TF-IDF + Logistic Regression · FastAPI · Web Speech API
+    &nbsp;|&nbsp; <a href="http://localhost:8000/docs" target="_blank">API Docs ↗</a>
+  </footer>
+
+</div>
+
+<script>
+const API = 'http://localhost:8000';
+let userLat = null, userLon = null;
+let recognition = null, isRecording = false, micText = '';
+
+function setMode(mode) {
+  ['text','mic'].forEach(m => {
+    document.getElementById('tab'   + m.charAt(0).toUpperCase() + m.slice(1)).classList.toggle('active', m === mode);
+    document.getElementById('panel' + m.charAt(0).toUpperCase() + m.slice(1)).classList.toggle('active', m === mode);
+  });
+}
+
+function toggleLocation() {
+  const on = document.getElementById('useLocation').checked;
+  const st = document.getElementById('locStatus');
+  if (!on) { userLat = userLon = null; st.textContent = ''; return; }
+  if (!navigator.geolocation) { st.textContent = '⚠ Not supported'; return; }
+  st.textContent = '📡 Getting…';
+  navigator.geolocation.getCurrentPosition(
+    p => {
+      userLat = p.coords.latitude; userLon = p.coords.longitude;
+      st.textContent = `✓ (${userLat.toFixed(4)}, ${userLon.toFixed(4)})`;
+      st.style.color = 'var(--green)';
+    },
+    () => { st.textContent = '✗ Could not get location'; st.style.color = 'var(--red)'; }
+  );
+}
+
+function chip(el) {
+  setMode('text');
+  const txt = el.textContent.replace(/^[^\w]+/,'').trim();
+  document.getElementById('textInput').value = txt;
+  goText();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('textInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') goText();
+  });
+});
+
+function toggleMic() {
+  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+    alert('Speech recognition is not supported in your browser.\nPlease use Chrome or Edge.');
+    return;
+  }
+  if (isRecording) { recognition.stop(); return; }
+
+  const Rec = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recognition = new Rec();
+  recognition.lang            = 'en-US';
+  recognition.interimResults  = true;
+  recognition.maxAlternatives = 1;
+
+  const btn     = document.getElementById('micBtn');
+  const status  = document.getElementById('micStatus');
+  const tx      = document.getElementById('micTranscript');
+  const sendBtn = document.getElementById('micSendBtn');
+
+  recognition.onstart = () => {
+    isRecording = true; micText = '';
+    btn.classList.add('recording'); btn.textContent = '⏹';
+    status.textContent = '🔴 Listening… speak now';
+    tx.style.display = 'block'; tx.textContent = '';
+    sendBtn.style.display = 'none';
+  };
+
+  recognition.onresult = e => {
+    let interim = '', final = '';
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      if (e.results[i].isFinal) final += e.results[i][0].transcript;
+      else interim += e.results[i][0].transcript;
+    }
+    if (final) micText += final;
+    tx.textContent = micText + (interim ? ' ' + interim : '');
+  };
+
+  recognition.onend = () => {
+    isRecording = false;
+    btn.classList.remove('recording'); btn.textContent = '🎙';
+    if (micText.trim()) {
+      status.textContent = '✓ Transcription complete';
+      sendBtn.style.display = 'block';
+    } else {
+      status.textContent = 'No speech detected. Try again.';
+    }
+  };
+
+  recognition.onerror = e => {
+    isRecording = false;
+    btn.classList.remove('recording'); btn.textContent = '🎙';
+    status.textContent = `Error: ${e.error}`;
+  };
+
+  recognition.start();
+}
+
+function sendMicResult() {
+  if (!micText.trim()) return;
+  callAPI(micText, 'voice');
+}
+
+async function goText() {
+  const q = document.getElementById('textInput').value.trim();
+  if (!q) return;
+  callAPI(q, 'text');
+}
+
+async function callAPI(query, mode) {
+  setLoading(true, 'Analysing your query…');
+  clearResults();
+  document.getElementById('textBtn').disabled = true;
+
+  try {
+    const body = { query, input_mode: mode };
+    if (userLat !== null) { body.user_lat = userLat; body.user_lon = userLon; }
+
+    const res = await fetch(`${API}/navigate`, {
+      method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(body)
+    });
+    if (!res.ok) { const e = await res.json(); throw new Error(e.detail || 'Server error'); }
+    const data = await res.json();
+    data._transcript = mode === 'voice' ? query : null;
+    render(data);
+  } catch(e) {
+    showError(e.message);
+  } finally {
+    setLoading(false);
+    document.getElementById('textBtn').disabled = false;
+  }
+}
+
+const ICONS = {STUDY:'📚',FOOD:'🍽️',MEDICAL:'🏥',ADMIN:'🏛️',LAB:'🔬',HOSTEL:'🏠'};
+function ibadge(intent){ return `<span class="ic ${intent}">${ICONS[intent]||'📍'} ${intent}</span>`; }
+
+function fmeta(f) {
+  const oc   = f.is_open ? 'op' : 'cl';
+  const dot  = f.is_open ? '🟢' : '🔴';
+  const dist = f.distance_m !== null
+    ? `<span class="mi">📏 ${f.distance_m<1000?f.distance_m+'m':(f.distance_m/1000).toFixed(1)+'km'}</span>` : '';
+  return `
+    <span class="ob ${oc}">${dot} ${f.is_open?'Open · Until '+f.closing_time:'Closed · Opens '+f.opening_time}</span>
+    ${dist}
+    <span class="mi">🏢 ${f.building}</span>
+    <span class="mi">📐 ${f.floor}</span>`;
+}
+
+function render(d) {
+  const mode       = d.input_mode || 'text';
+  const transcript = d._transcript;
+
+  let html = `
+    <div class="res-header fu">
+      <h2>Results for <em style="color:var(--accent2)">"${d.query}"</em></h2>
+      <span class="conf-badge">🎯 ${d.confidence}%</span>
+    </div>`;
+
+  if (mode === 'voice' && transcript) {
+    html += `<div class="transcript-banner fu">
+      <strong>🎙 You said (Web Speech API):</strong> "${transcript}"
+    </div>`;
+  }
+
+  html += `<div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">${ibadge(d.intent)}</div>`;
+
+  if (!d.recommended) {
+    html += `<div class="errbox">No facilities found for intent <strong>${d.intent}</strong>.</div>`;
+  } else {
+    const f = d.recommended;
+    html += `
+      <div class="fcard primary fu">
+        <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px">
+          <div style="flex:1">
+            <div class="fname">${f.name}</div>
+            <div class="fdesc">${f.description}</div>
+          </div>${ibadge(d.intent)}
+        </div>
+        <div class="fmeta">${fmeta(f)}</div>
+        <a class="maps-btn" href="${f.maps_link}" target="_blank">🗺 Open in Google Maps</a>
+      </div>`;
+
+    if (d.alternatives?.length) {
+      html += `<div class="alt-title">Other Options (${d.alternatives.length})</div>`;
+      d.alternatives.forEach(a => {
+        const cls  = a.is_open ? 'op':'cl';
+        const dot  = a.is_open ? '🟢':'🔴';
+        const dist = a.distance_m !== null
+          ? ` · ${a.distance_m<1000?a.distance_m+'m':(a.distance_m/1000).toFixed(1)+'km'}` : '';
+        html += `<a class="acard" href="${a.maps_link}" target="_blank">
+          <div>
+            <div class="an">${a.name}</div>
+            <div class="am"><span class="ob ${cls}" style="font-size:11px;padding:2px 8px">${dot} ${a.is_open?'Open':'Closed'}</span> ${a.building}${dist}</div>
+          </div>
+          <span style="margin-left:auto;color:var(--muted)">↗</span>
+        </a>`;
+      });
+    }
+  }
+  document.getElementById('results').innerHTML = html;
+}
+
+function setLoading(on, msg='') {
+  document.getElementById('loader').style.display  = on ? 'block' : 'none';
+  document.getElementById('loaderMsg').textContent = msg;
+}
+function clearResults() { document.getElementById('results').innerHTML = ''; }
+function showError(msg) {
+  document.getElementById('results').innerHTML = `
+    <div class="errbox fu">⚠ <strong>Error:</strong> ${msg}<br/>
+    <small style="opacity:.7">Make sure the backend is running at ${API}</small></div>`;
+}
+</script>
+</body>
+</html>
