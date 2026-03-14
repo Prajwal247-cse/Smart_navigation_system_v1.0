@@ -1,4 +1,4 @@
-# IntentRoute 🧭
+# Smart_navugation_system🧭
 ### *From Intention to Destination.*
 
 > A Semantic Intent-Based, Context-Aware Smart Campus Navigation System that understands natural language — by text or voice — and guides you to the right place on campus.
