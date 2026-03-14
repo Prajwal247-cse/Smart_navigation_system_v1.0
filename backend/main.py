@@ -1,21 +1,3 @@
-"""
-backend/main.py
-----------------
-FastAPI backend for the Smart Campus Navigation System.
-Supports BOTH text and audio queries.
-
-Endpoints:
-  POST /navigate          — Text query → intent → recommend facility
-  POST /navigate/audio    — Audio file upload → transcribe → intent → recommend
-  GET  /facilities        — List all facilities (optional ?category= filter)
-  GET  /health            — Health check + STT capability info
-
-Audio transcription priority:
-  1. OpenAI Whisper (best accuracy, fully offline)
-  2. SpeechRecognition + Google STT (requires internet)
-  3. Graceful 501 error if neither available (browser Web Speech API handles it)
-"""
-
 import os
 import sys
 import math
